@@ -1,0 +1,7 @@
+spring:
+  # RDB properties
+  datasource:
+    url: jdbc:mysql://localhost:3306/hr                 # Mysql URL (??? DB ?? ??)
+    username: root                                        # DB ??? ??
+    password: qwer                                        # DB ????
+    driver-class-name: com.mysql.cj.jdbc.Driver           # MariaDB ???? ??? ??
