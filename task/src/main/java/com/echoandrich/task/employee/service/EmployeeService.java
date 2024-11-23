@@ -1,7 +1,7 @@
 package com.echoandrich.task.employee.service;
 
-import com.echoandrich.task.department.Department;
-import com.echoandrich.task.department.DepartmentRepository;
+import com.echoandrich.task.department.repository.Department;
+import com.echoandrich.task.department.repository.DepartmentRepository;
 import com.echoandrich.task.employee.dto.EmployeeDto;
 import com.echoandrich.task.employee.dto.EmployeeUpdatingDto;
 import com.echoandrich.task.employee.repository.Employee;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.echoandrich.task.department.DepartmentConstants.NOT_EXISTING_DEPARTMENT_MESSAGE;
+import static com.echoandrich.task.department.constants.DepartmentConstants.NOT_EXISTING_DEPARTMENT_MESSAGE;
 import static com.echoandrich.task.employee.constants.EmployeeConstants.*;
 import static com.echoandrich.task.job.JobConstants.NOT_EXISTING_JOB_MESSAGE;
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.echoandrich.task.employee.constants.EmployeeConstants.NOT_EXISTING_EMPLOYEE_MESSAGE;
-import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.DEFAULT_PAGING_SIZE;
+import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.DEFAULT_JOB_HISTORY_PAGING_SIZE;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +33,7 @@ public class JobHistoryService {
                 .orElseThrow(() -> new IllegalArgumentException(NOT_EXISTING_EMPLOYEE_MESSAGE));
 
         // 최신 순으로 데이터 조회
-        PageRequest paging = PageRequest.ofSize(DEFAULT_PAGING_SIZE)
+        PageRequest paging = PageRequest.ofSize(DEFAULT_JOB_HISTORY_PAGING_SIZE)
                 .withSort(Sort.by(Sort.Order.desc("id.startDate")));
 
         return Optional.ofNullable(jobHistoryRepository.findByIdEmployeeIdAndIdStartDateBefore(employeeId, startDate, paging))

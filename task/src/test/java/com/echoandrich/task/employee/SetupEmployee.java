@@ -1,6 +1,6 @@
 package com.echoandrich.task.employee;
 
-import com.echoandrich.task.department.Department;
+import com.echoandrich.task.department.repository.Department;
 import com.echoandrich.task.employee.dto.EmployeeUpdatingDto;
 import com.echoandrich.task.employee.repository.Employee;
 import com.echoandrich.task.job.Job;
@@ -89,7 +89,6 @@ public class SetupEmployee {
         department.setDepartmentId(departmentId);
         department.setDepartmentName("department name");
         department.setManagerId(600);
-        department.setLocationId(300);
 
         return department;
     }

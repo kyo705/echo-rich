@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.echoandrich.task.employee.constants.EmployeeConstants.NOT_EXISTING_EMPLOYEE_MESSAGE;
-import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.DEFAULT_PAGING_SIZE;
+import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.DEFAULT_JOB_HISTORY_PAGING_SIZE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -67,7 +67,7 @@ class JobHistoryServiceTest {
         jobHistory2.setDepartmentId(150);
 
         List<JobHistory> jobHistories = List.of(jobHistory1, jobHistory2);
-        PageRequest paging = PageRequest.ofSize(DEFAULT_PAGING_SIZE).withSort(Sort.by(Sort.Order.desc("id.startDate")));
+        PageRequest paging = PageRequest.ofSize(DEFAULT_JOB_HISTORY_PAGING_SIZE).withSort(Sort.by(Sort.Order.desc("id.startDate")));
 
         given(employeeRepository.findById(employeeId)).willReturn(Optional.of(new Employee()));
         given(jobHistoryRepository.findByIdEmployeeIdAndIdStartDateBefore(employeeId, startDate, paging))
@@ -94,7 +94,7 @@ class JobHistoryServiceTest {
         //given
         Integer employeeId = 100;
         LocalDate startDate = LocalDate.parse("2024-11-23");
-        PageRequest paging = PageRequest.ofSize(DEFAULT_PAGING_SIZE).withSort(Sort.by(Sort.Order.desc("id.startDate")));
+        PageRequest paging = PageRequest.ofSize(DEFAULT_JOB_HISTORY_PAGING_SIZE).withSort(Sort.by(Sort.Order.desc("id.startDate")));
 
         given(employeeRepository.findById(employeeId)).willReturn(Optional.of(new Employee()));
         given(jobHistoryRepository.findByIdEmployeeIdAndIdStartDateBefore(employeeId, startDate, paging))
@@ -114,7 +114,7 @@ class JobHistoryServiceTest {
         //given
         Integer employeeId = 100;
         LocalDate startDate = LocalDate.parse("2024-11-23");
-        PageRequest paging = PageRequest.ofSize(DEFAULT_PAGING_SIZE).withSort(Sort.by(Sort.Order.desc("id.startDate")));
+        PageRequest paging = PageRequest.ofSize(DEFAULT_JOB_HISTORY_PAGING_SIZE).withSort(Sort.by(Sort.Order.desc("id.startDate")));
 
         given(employeeRepository.findById(employeeId)).willReturn(Optional.of(new Employee()));
         given(jobHistoryRepository.findByIdEmployeeIdAndIdStartDateBefore(employeeId, startDate, paging))

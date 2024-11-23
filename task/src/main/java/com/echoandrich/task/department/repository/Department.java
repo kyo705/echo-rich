@@ -1,9 +1,12 @@
-package com.echoandrich.task.department;
+package com.echoandrich.task.department.repository;
 
+import com.echoandrich.task.location.Location;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Setter
 @Entity
@@ -18,8 +21,9 @@ public class Department {
     @Column(name = "department_name", length = 30, nullable = false)
     private String departmentName;
 
-    @Column(name = "location_id", nullable = false)
-    private Integer locationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", referencedColumnName = "location_id", nullable = false)
+    private Location location;
 
     @Column(name = "manager_id", nullable = false)
     private Integer managerId;

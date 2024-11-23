@@ -1,7 +1,7 @@
 package com.echoandrich.task.employee.service;
 
-import com.echoandrich.task.department.Department;
-import com.echoandrich.task.department.DepartmentRepository;
+import com.echoandrich.task.department.repository.Department;
+import com.echoandrich.task.department.repository.DepartmentRepository;
 import com.echoandrich.task.employee.SetupEmployee;
 import com.echoandrich.task.employee.dto.EmployeeDto;
 import com.echoandrich.task.employee.dto.EmployeeUpdatingDto;
@@ -21,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static com.echoandrich.task.department.DepartmentConstants.NOT_EXISTING_DEPARTMENT_MESSAGE;
+import static com.echoandrich.task.department.constants.DepartmentConstants.NOT_EXISTING_DEPARTMENT_MESSAGE;
 import static com.echoandrich.task.employee.constants.EmployeeConstants.*;
 import static com.echoandrich.task.job.JobConstants.NOT_EXISTING_JOB_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
