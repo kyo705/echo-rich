@@ -1,12 +1,13 @@
 package com.echoandrich.task.employee.controller;
 
 import com.echoandrich.task.employee.dto.EmployeeDto;
+import com.echoandrich.task.employee.dto.EmployeeUpdatingDto;
 import com.echoandrich.task.employee.service.EmployeeService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.echoandrich.task.employee.constants.EmployeeConstants.EMPLOYEE_PATH_URI;
 
@@ -22,7 +23,18 @@ public class EmployeeController {
         EmployeeDto responseBody = employeeService.findById(employeeId);
 
         return ResponseEntity
-                .ok(responseBody);
+                .status(HttpStatus.OK)
+                .body(responseBody);
     }
 
+    @PatchMapping(EMPLOYEE_PATH_URI)
+    public ResponseEntity<EmployeeDto> update(@PathVariable Integer employeeId,
+                                              @Valid @RequestBody EmployeeUpdatingDto requestBody) {
+
+        EmployeeDto responseBody = employeeService.update(employeeId, requestBody);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(responseBody);
+    }
 }
