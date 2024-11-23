@@ -1,25 +1,20 @@
 package com.echoandrich.task.jobHistory.service;
 
-import com.echoandrich.task.employee.constants.EmployeeConstants;
 import com.echoandrich.task.employee.repository.Employee;
 import com.echoandrich.task.employee.repository.EmployeeRepository;
-import com.echoandrich.task.jobHistory.constants.JobHistoryConstants;
 import com.echoandrich.task.jobHistory.dto.JobHistoryDto;
 import com.echoandrich.task.jobHistory.repository.JobHistory;
 import com.echoandrich.task.jobHistory.repository.JobHistoryId;
 import com.echoandrich.task.jobHistory.repository.JobHistoryRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
-import java.awt.print.Pageable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +23,6 @@ import static com.echoandrich.task.employee.constants.EmployeeConstants.NOT_EXIS
 import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.DEFAULT_PAGING_SIZE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)

@@ -1,25 +1,16 @@
 package com.echoandrich.task.jobHistory.controller;
 
-import com.echoandrich.task.employee.constants.EmployeeConstants;
-import com.echoandrich.task.jobHistory.constants.JobHistoryConstants;
 import com.echoandrich.task.jobHistory.dto.JobHistoryDto;
 import com.echoandrich.task.jobHistory.service.JobHistoryService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriBuilderFactory;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +18,6 @@ import static com.echoandrich.task.employee.constants.EmployeeConstants.NOT_EXIS
 import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.JOB_HISTORIES_PATH_URI;
 import static com.echoandrich.task.jobHistory.constants.JobHistoryConstants.NOT_FOUND_JOB_HISTORIES_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

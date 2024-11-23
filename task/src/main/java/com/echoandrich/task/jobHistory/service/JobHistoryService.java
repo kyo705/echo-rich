@@ -1,6 +1,5 @@
 package com.echoandrich.task.jobHistory.service;
 
-import com.echoandrich.task.employee.constants.EmployeeConstants;
 import com.echoandrich.task.employee.repository.EmployeeRepository;
 import com.echoandrich.task.jobHistory.dto.JobHistoryDto;
 import com.echoandrich.task.jobHistory.repository.JobHistoryRepository;
