@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 public class EmployeeDto {
 
-    private Long employeeId;
+    private Integer employeeId;
 
     private String firstName;
 

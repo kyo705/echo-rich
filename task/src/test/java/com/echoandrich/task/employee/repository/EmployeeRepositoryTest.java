@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
 class EmployeeRepositoryTest {
@@ -22,7 +24,7 @@ class EmployeeRepositoryTest {
     public void findById() {
 
         //given
-        Long employeeId = 100L;
+        Integer employeeId = 100;
 
         //when
         Optional<Employee> employee = employeeRepository.findById(employeeId);
@@ -36,7 +38,7 @@ class EmployeeRepositoryTest {
     public void findByIdWithInvalidId() {
 
         //given
-        Long employeeId = 0L;
+        Integer employeeId = 0;
 
         //when
         Optional<Employee> employee = employeeRepository.findById(employeeId);

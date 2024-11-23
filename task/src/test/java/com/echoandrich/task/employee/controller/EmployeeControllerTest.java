@@ -37,7 +37,7 @@ class EmployeeControllerTest {
     void findById() throws Exception {
 
         //given
-        Long employeeId = 100L;
+        Integer employeeId = 100;
 
         EmployeeDto employee = new EmployeeDto();
         employee.setEmployeeId(employeeId);
@@ -82,7 +82,7 @@ class EmployeeControllerTest {
     void findByIdWithInvalidId() throws Exception {
 
         //given
-        Long employeeId = 100L;
+        Integer employeeId = 100;
 
         BDDMockito.given(employeeService.findById(employeeId))
                 .willThrow(new IllegalArgumentException(NOT_EXISTING_EMPLOYEE_MESSAGE));

@@ -17,7 +17,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping(EMPLOYEE_PATH_URI)
-    public ResponseEntity<EmployeeDto> findById(@PathVariable Long employeeId) {
+    public ResponseEntity<EmployeeDto> findById(@PathVariable Integer employeeId) {
 
         EmployeeDto responseBody = employeeService.findById(employeeId);
 

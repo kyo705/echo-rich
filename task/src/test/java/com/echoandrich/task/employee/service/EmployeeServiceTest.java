@@ -32,7 +32,7 @@ class EmployeeServiceTest {
     void findById() {
 
         //given
-        Long employeeId = 100L;
+        Integer employeeId = 100;
 
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
@@ -71,7 +71,7 @@ class EmployeeServiceTest {
     void findByIdWithInvalidId() {
 
         //given
-        Long employeeId = 100L;
+        Integer employeeId = 100;
 
         BDDMockito.given(employeeRepository.findById(employeeId)).willReturn(Optional.empty());
 

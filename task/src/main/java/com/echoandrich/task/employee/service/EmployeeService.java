@@ -13,7 +13,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Transactional(readOnly = true)
-    public EmployeeDto findById(Long employeeId) {
+    public EmployeeDto findById(Integer employeeId) {
 
         return employeeRepository.findById(employeeId)
                 .map(EmployeeDto::create)
