@@ -1,5 +1,6 @@
 package com.echoandrich.task.employee.repository;
 
+import com.echoandrich.task.job.Job;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,9 +34,6 @@ public class Employee {
     @Column(name = "hire_date", nullable = false)
     private LocalDate hireDate;
 
-    @Column(name = "job_id", length = 10, nullable = false)
-    private String jobId;
-
     @Column(name = "salary", precision = 8, scale = 2, nullable = false)
     private BigDecimal salary;
 
@@ -47,4 +45,8 @@ public class Employee {
 
     @Column(name = "department_id")
     private Integer departmentId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id", referencedColumnName = "job_id", nullable = false)
+    private Job job;
 }

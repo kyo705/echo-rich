@@ -8,11 +8,17 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class SetupEmployee {
 
     public static Employee employee(Integer employeeId) {
+        Job job = new Job();
+        job.setJobId("AD_PRES");
+        job.setMinSalary(BigDecimal.valueOf(0));
+        job.setMaxSalary(BigDecimal.valueOf(Integer.MAX_VALUE));
 
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
@@ -21,13 +27,53 @@ public class SetupEmployee {
         employee.setEmail("SKING");
         employee.setPhoneNumber("515.123.4567");
         employee.setHireDate(LocalDate.parse("1987-06-17"));
-        employee.setJobId("AD_PRES");
-        employee.setSalary(new BigDecimal("24000.00"));
+        employee.setJob(job);
+        employee.setSalary(new BigDecimal(employeeId * 100));
         employee.setCommissionPct(null);
         employee.setManagerId(null);
         employee.setDepartmentId(90);
 
         return employee;
+    }
+
+    public static Employee employeeWithSmallMaxSalary(Integer employeeId) {
+        Job job = new Job();
+        job.setJobId("AD_PRES");
+        job.setMinSalary(BigDecimal.valueOf(0));
+        job.setMaxSalary(BigDecimal.valueOf(employeeId * 110));
+
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeId);
+        employee.setFirstName("Steven");
+        employee.setLastName("King");
+        employee.setEmail("SKING");
+        employee.setPhoneNumber("515.123.4567");
+        employee.setHireDate(LocalDate.parse("1987-06-17"));
+        employee.setJob(job);
+        employee.setSalary(new BigDecimal(employeeId * 100));
+        employee.setCommissionPct(null);
+        employee.setManagerId(null);
+        employee.setDepartmentId(90);
+
+        return employee;
+    }
+
+
+    public static List<Employee> employees() {
+        List<Employee> employees = new ArrayList<>();
+        for(int i=1;i<=50;i++) {
+            employees.add(employee(i));
+        }
+        return employees;
+    }
+
+
+    public static List<Employee> employeesWithExceedSalary() {
+        List<Employee> employees = new ArrayList<>();
+        for(int i=1;i<=50;i++) {
+            employees.add(employeeWithSmallMaxSalary(i));
+        }
+        return employees;
     }
 
     public static Stream<Arguments> getDefaultUpdatingConditions() {
@@ -198,4 +244,5 @@ public class SetupEmployee {
                                 """
                 );
     }
+
 }

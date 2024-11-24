@@ -9,6 +9,7 @@ import com.echoandrich.task.employee.repository.Employee;
 import com.echoandrich.task.employee.repository.EmployeeRepository;
 import com.echoandrich.task.job.Job;
 import com.echoandrich.task.job.JobRepository;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static com.echoandrich.task.department.constants.DepartmentConstants.NOT_EXISTING_DEPARTMENT_MESSAGE;
@@ -26,6 +28,7 @@ import static com.echoandrich.task.employee.constants.EmployeeConstants.*;
 import static com.echoandrich.task.job.JobConstants.NOT_EXISTING_JOB_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,6 +36,9 @@ class EmployeeServiceTest {
 
     @InjectMocks
     private EmployeeService employeeService;
+
+    @Mock
+    private EntityManager entityManager;
 
     @Mock
     private EmployeeRepository employeeRepository;
@@ -64,7 +70,7 @@ class EmployeeServiceTest {
         assertThat(employeeDto.getEmail()).isEqualTo(employee.getEmail());
         assertThat(employeeDto.getPhoneNumber()).isEqualTo(employee.getPhoneNumber());
         assertThat(employeeDto.getHireDate()).isEqualTo(employee.getHireDate());
-        assertThat(employeeDto.getJobId()).isEqualTo(employee.getJobId());
+        assertThat(employeeDto.getJobId()).isEqualTo(employee.getJob().getJobId());
         assertThat(employeeDto.getSalary()).isEqualTo(employee.getSalary());
         assertThat(employeeDto.getCommissionPct()).isEqualTo(employee.getCommissionPct());
         assertThat(employeeDto.getManagerId()).isEqualTo(employee.getManagerId());
@@ -81,7 +87,7 @@ class EmployeeServiceTest {
         given(employeeRepository.findById(employeeId)).willReturn(Optional.empty());
 
         //when & then
-        assertThatThrownBy(() ->employeeService.findById(employeeId))
+        assertThatThrownBy(() -> employeeService.findById(employeeId))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -117,22 +123,22 @@ class EmployeeServiceTest {
         EmployeeDto employeeDto = employeeService.update(employeeId, updatingConditions);
 
         //then
-        if(updatingConditions.getFirstName() != null) {
+        if (updatingConditions.getFirstName() != null) {
             assertThat(employeeDto.getFirstName()).isEqualTo(updatingConditions.getFirstName());
         }
-        if(updatingConditions.getLastName() != null) {
+        if (updatingConditions.getLastName() != null) {
             assertThat(employeeDto.getLastName()).isEqualTo(updatingConditions.getLastName());
         }
-        if(updatingConditions.getEmail() != null) {
+        if (updatingConditions.getEmail() != null) {
             assertThat(employeeDto.getEmail()).isEqualTo(updatingConditions.getEmail());
         }
-        if(updatingConditions.getPhoneNumber() != null) {
+        if (updatingConditions.getPhoneNumber() != null) {
             assertThat(employeeDto.getPhoneNumber()).isEqualTo(updatingConditions.getPhoneNumber());
         }
-        if(updatingConditions.getSalary() != null) {
+        if (updatingConditions.getSalary() != null) {
             assertThat(employeeDto.getSalary()).isEqualTo(updatingConditions.getSalary());
         }
-        if(updatingConditions.getCommissionPct() != null) {
+        if (updatingConditions.getCommissionPct() != null) {
             assertThat(employeeDto.getCommissionPct()).isEqualTo(updatingConditions.getCommissionPct());
         }
     }
@@ -152,7 +158,7 @@ class EmployeeServiceTest {
         given(jobRepository.findById(jobId)).willReturn(Optional.empty());
 
         //when & then
-        assertThatThrownBy(() ->employeeService.update(employeeId, updatingConditions))
+        assertThatThrownBy(() -> employeeService.update(employeeId, updatingConditions))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(NOT_EXISTING_JOB_MESSAGE);
     }
@@ -175,7 +181,7 @@ class EmployeeServiceTest {
         given(jobRepository.findById(jobId)).willReturn(Optional.of(job));
 
         //when & then
-        assertThatThrownBy(() ->employeeService.update(employeeId, updatingConditions))
+        assertThatThrownBy(() -> employeeService.update(employeeId, updatingConditions))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(SALARY_TOO_SMALL_MESSAGE);
     }
@@ -199,7 +205,7 @@ class EmployeeServiceTest {
         given(jobRepository.findById(jobId)).willReturn(Optional.of(job));
 
         //when & then
-        assertThatThrownBy(() ->employeeService.update(employeeId, updatingConditions))
+        assertThatThrownBy(() -> employeeService.update(employeeId, updatingConditions))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(SALARY_TOO_BIG_MESSAGE);
     }
@@ -248,7 +254,7 @@ class EmployeeServiceTest {
         given(departmentRepository.findById(departmentId)).willReturn(Optional.empty());
 
         //when & then
-        assertThatThrownBy(() ->employeeService.update(employeeId, updatingConditions))
+        assertThatThrownBy(() -> employeeService.update(employeeId, updatingConditions))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(NOT_EXISTING_DEPARTMENT_MESSAGE);
     }
@@ -277,5 +283,75 @@ class EmployeeServiceTest {
         //then
         assertThat(employeeDto.getDepartmentId()).isEqualTo(department.getDepartmentId());
         assertThat(employeeDto.getManagerId()).isEqualTo(department.getManagerId());
+    }
+
+    @DisplayName("[부서 전체 급여 인상 : 업데이트하려는 부서가 존재하지 않는 경우")
+    @Test
+    void increaseSalaryWithDepartmentGroupWithNotExistingDepartment() {
+
+        //given
+        Integer departmentId = 50;
+        BigDecimal increaseSalaryRate = BigDecimal.valueOf(0.30);
+
+        given(departmentRepository.findById(departmentId)).willReturn(Optional.empty());
+
+        //when & then
+        assertThatThrownBy(() -> employeeService.increaseSalaryWithDepartmentGroup(departmentId, increaseSalaryRate))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(NOT_EXISTING_DEPARTMENT_MESSAGE);
+    }
+
+    @DisplayName("[부서 전체 급여 인상 : 급여 인상된 금액이 직업 최대 급여를 넘지 않은 경우")
+    @Test
+    void increaseSalaryWithDepartmentGroup() {
+
+        //given
+        Integer departmentId = 50;
+        BigDecimal increaseSalaryRate = BigDecimal.valueOf(0.30);
+
+        List<Employee> employees = SetupEmployee.employees();
+        List<BigDecimal> beforeEmploySalary = employees.stream().map(Employee::getSalary).toList();
+        given(employeeRepository.findByDepartmentId(any(), any())).willReturn(employees);
+
+        Department department = SetupEmployee.department(departmentId);
+        given(departmentRepository.findById(departmentId)).willReturn(Optional.of(department));
+
+
+        //when & then
+        employeeService.increaseSalaryWithDepartmentGroup(departmentId, increaseSalaryRate);
+
+        // then
+        for(int i=0;i<employees.size();i++) {
+            assertThat(employees.get(i).getSalary())
+                    .isEqualTo(BigDecimal.valueOf(beforeEmploySalary.get(i).doubleValue() * (1 + increaseSalaryRate.doubleValue())));
+        }
+    }
+
+    @DisplayName("[부서 전체 급여 인상 : 급여 인상된 금액이 직업 최대 급여를 넘은 경우")
+    @Test
+    void increaseSalaryWithDepartmentGroupWithExceedMaxSalary() {
+
+        //given
+        Integer departmentId = 50;
+        BigDecimal increaseSalaryRate = BigDecimal.valueOf(0.30);
+
+        List<Employee> employees = SetupEmployee.employeesWithExceedSalary();
+        List<BigDecimal> beforeEmploySalary = employees.stream().map(Employee::getSalary).toList();
+        given(employeeRepository.findByDepartmentId(any(), any())).willReturn(employees);
+
+        Department department = SetupEmployee.department(departmentId);
+        given(departmentRepository.findById(departmentId)).willReturn(Optional.of(department));
+
+
+        //when & then
+        employeeService.increaseSalaryWithDepartmentGroup(departmentId, increaseSalaryRate);
+
+        // then
+        for(int i=0;i<employees.size();i++) {
+            assertThat(employees.get(i).getSalary())
+                    .isNotEqualTo(BigDecimal.valueOf(beforeEmploySalary.get(i).doubleValue() * (1 + increaseSalaryRate.doubleValue())));
+
+            assertThat(employees.get(i).getSalary()).isEqualTo(employees.get(i).getJob().getMaxSalary());
+        }
     }
 }

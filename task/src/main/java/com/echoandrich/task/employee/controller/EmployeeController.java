@@ -2,6 +2,7 @@ package com.echoandrich.task.employee.controller;
 
 import com.echoandrich.task.employee.dto.EmployeeDto;
 import com.echoandrich.task.employee.dto.EmployeeUpdatingDto;
+import com.echoandrich.task.employee.dto.SalaryIncreasingDto;
 import com.echoandrich.task.employee.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.echoandrich.task.employee.constants.EmployeeConstants.DEPARTMENT_SALARY_INCREASE_PATH_URI;
 import static com.echoandrich.task.employee.constants.EmployeeConstants.EMPLOYEE_PATH_URI;
 
 @RestController
@@ -36,5 +38,17 @@ public class EmployeeController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(responseBody);
+    }
+
+    @PostMapping(DEPARTMENT_SALARY_INCREASE_PATH_URI)
+    public ResponseEntity<Void> increaseSalaryWithDepartmentGroup(
+            @PathVariable Integer departmentId,
+            @RequestBody @Valid SalaryIncreasingDto requestBody) {
+
+        employeeService.increaseSalaryWithDepartmentGroup(departmentId, requestBody.getSalaryIncreaseRate());
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

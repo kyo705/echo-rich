@@ -16,11 +16,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.echoandrich.task.department.constants.DepartmentConstants.NOT_EXISTING_DEPARTMENT_MESSAGE;
 import static com.echoandrich.task.employee.constants.EmployeeConstants.NOT_EXISTING_EMPLOYEE_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.mockito.BDDMockito.willThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(EmployeeController.class)
@@ -134,6 +135,62 @@ class EmployeeControllerTest {
 
         //when & then
         mvc.perform(patch(EmployeeConstants.EMPLOYEE_PATH_URI, employeeId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    String responseBody = result.getResponse().getContentAsString();
+                    System.out.println(responseBody);
+                })
+        ;
+    }
+
+    @DisplayName("[부서 전체 급여 인상 : 부서가 존재하지 않는 경우]")
+    @Test
+    void increaseSalaryWithDepartmentGroupWithNotExistingDepartment() throws Exception {
+
+        //given
+        Integer departmentId = 100;
+        String requestBody = """
+                {
+                    "salaryIncreaseRate" : "0.1"
+                }
+                """;
+
+        willThrow(new IllegalArgumentException(NOT_EXISTING_DEPARTMENT_MESSAGE))
+                .given(employeeService)
+                .increaseSalaryWithDepartmentGroup(any(), any());
+
+        //when & then
+        mvc.perform(post(EmployeeConstants.DEPARTMENT_SALARY_INCREASE_PATH_URI, departmentId)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .content(requestBody)
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    String responseBody = result.getResponse().getContentAsString();
+                    System.out.println(responseBody);
+
+                    assertThat(responseBody).isEqualTo(NOT_EXISTING_DEPARTMENT_MESSAGE);
+                })
+        ;
+    }
+
+    @DisplayName("[부서 전체 급여 인상 : 부서가 존재하지 않는 경우]")
+    @Test
+    void increaseSalaryWithDepartmentGroupWithInvalidIncreaseSalaryRate() throws Exception {
+
+        //given
+        Integer departmentId = 100;
+        String requestBody = """
+                {
+                    "salaryIncreaseRate" : "1.1"
+                }
+                """;
+
+        //when & then
+        mvc.perform(post(EmployeeConstants.DEPARTMENT_SALARY_INCREASE_PATH_URI, departmentId)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(requestBody)
                 )

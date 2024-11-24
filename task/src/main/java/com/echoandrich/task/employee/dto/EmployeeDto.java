@@ -42,7 +42,7 @@ public class EmployeeDto {
         employeeDto.setEmail(employee.getEmail());
         employeeDto.setPhoneNumber(employee.getPhoneNumber());
         employeeDto.setHireDate(employee.getHireDate());
-        employeeDto.setJobId(employee.getJobId());
+        employeeDto.setJobId(employee.getJob().getJobId());
         employeeDto.setSalary(employee.getSalary());
         employeeDto.setCommissionPct(employee.getCommissionPct());
         employeeDto.setManagerId(employee.getManagerId());
