@@ -5,6 +5,7 @@ import com.echoandrich.task.jobHistory.dto.JobHistoriesFindingDto;
 import com.echoandrich.task.jobHistory.dto.JobHistoryDto;
 import com.echoandrich.task.jobHistory.service.JobHistoryService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,7 +25,7 @@ public class JobHistoryController {
 
     @GetMapping(JOB_HISTORIES_PATH_URI)
     public ResponseEntity<List<JobHistoryDto>> findJobHistories(@PathVariable Integer employeeId,
-                                                                @ModelAttribute JobHistoriesFindingDto requestParams) {
+                                                                @ParameterObject @ModelAttribute JobHistoriesFindingDto requestParams) {
 
         List<JobHistoryDto> jobHistories = jobHistoryService.findJobHistories(employeeId, requestParams.getStartDate());
         if(jobHistories.isEmpty()) {

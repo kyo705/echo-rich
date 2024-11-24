@@ -6,6 +6,7 @@ import com.echoandrich.task.department.dto.DepartmentsFindingDto;
 import com.echoandrich.task.department.service.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class DepartmentController {
 
     @GetMapping(DEPARTMENTS_PATH_URI)
     public ResponseEntity<List<DepartmentLocationDto>> findDepartmentsWithLocation(
-            @ModelAttribute @Valid DepartmentsFindingDto requestParams) {
+            @ParameterObject @ModelAttribute @Valid DepartmentsFindingDto requestParams) {
 
         List<DepartmentLocationDto> responseBody = departmentService.findDepartmentsWithLocation(requestParams.getLastDepartmentId());
 
