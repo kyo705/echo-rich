@@ -109,7 +109,7 @@ public class EmployeeService {
                     .withSort(Sort.by(Sort.Order.asc("employeeId")));
             List<Employee> employees = employeeRepository.findByDepartmentId(departmentId, paging);
             for (Employee employee : employees) {
-                BigDecimal increasedSalary = BigDecimal.valueOf(employee.getSalary().doubleValue() * (1 + increaseRate.doubleValue()));
+                BigDecimal increasedSalary = employee.getSalary().add(employee.getSalary().multiply(increaseRate));
 
                 if (employee.getJob().getMaxSalary().compareTo(increasedSalary) < 0) {
                     employee.setSalary(employee.getJob().getMaxSalary());
